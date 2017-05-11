@@ -402,8 +402,7 @@
           </executions>
      	    <configuration>
             <skip>${skipIntegrationTests}</skip>
-            <!--sdkInstallPath>${sap.cloud.sdk.path}</sdkInstallPath-->
-			<sdkInstallPath>C:\Users\i312624\java_sapcp_project\neo-java-web-sdk-1.126.11\tools</sdkInstallPath>
+            <sdkInstallPath>${sap.cloud.sdk.path}</sdkInstallPath>
           </configuration>
         </plugin>
       </plugins>
