@@ -19,7 +19,7 @@
 
     <properties>
         <!-- Properties that hold information on the location, version and plugin of the SAP Cloud Platform SDK -->
-        <sap.cloud.sdk.path>${project.basedir}/../..</sap.cloud.sdk.path>
+         <sap.cloud.sdk.path>${project.build.directory}/sdk</sap.cloud.sdk.path>
         <sap.cloud.sdk.version>1.126.11</sap.cloud.sdk.version>
         <sap.cloud.sdk.plugin>neo-java-web-maven-plugin</sap.cloud.sdk.plugin>
 
@@ -120,16 +120,16 @@
     </dependencies>
 
     <modules>
-       # <module>authentication</module>
-        #<module>connectivity</module>
-        #<module>document-store</module>
-        #<module>explore-ui5</module>
+        <!--module>authentication</module>
+        <module>connectivity</module>
+        <module>document-store</module>
+        <module>explore-ui5</module-->
         <module>hello-world</module>
-        #<module>keystore</module>
-        #<module>mail</module>
-        #<module>persistence-with-jdbc</module>
-        #<module>persistence-with-jpa</module>
-        #<module>websocket</module>
+        <!--module>keystore</module>
+        <module>mail</module>
+        <module>persistence-with-jdbc</module>
+        <module>persistence-with-jpa</module>
+        <module>websocket</module-->
     </modules>
 
     <build>
@@ -328,132 +328,29 @@
             the maven-failsafe-plugin (execute-cloud-integration-tests) and finally stop the cloud application (stop-cloud-application) -->
         <!-- Note that you need to provide Maven properties sap.cloud.account, sap.cloud.username, and sap.cloud.password 
             for the operations to pass successfully and https.proxyHost and possibly https.proxyPort if you have a proxy! -->
-        <profile>
-            <id>cloud-integration-tests</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-enforcer-plugin</artifactId>
-                        <version>1.0.1</version>
-                        <executions>
-                            <execution>
-                                <id>enforce-maven</id>
-                                <goals>
-                                    <goal>enforce</goal>
-                                </goals>
-                                <configuration>
-                                    <rules>
-                                        <requireProperty>
-                                            <property>sap.cloud.account</property>
-                                            <message>Maven property for SAP Cloud Platform account
-                                                (-Dsap.cloud.account=...) is missing, but required!</message>
-                                        </requireProperty>
-                                        <requireProperty>
-                                            <property>sap.cloud.username</property>
-                                            <message>Maven property for SAP Cloud Platform user name
-                                                (-Dsap.cloud.username=...) is missing, but required!</message>
-                                        </requireProperty>
-                                        <requireProperty>
-                                            <property>sap.cloud.password</property>
-                                            <message>Maven property for SAP Cloud Platform password
-                                                (-Dsap.cloud.password=...) is missing, but required!</message>
-                                        </requireProperty>
-                                    </rules>
-                                </configuration>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <skip>${skipIntegrationTests}</skip>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>com.sap.cloud</groupId>
-                        <artifactId>${sap.cloud.sdk.plugin}</artifactId>
-                        <executions>
-                            <execution>
-                                <id>cleanup-cloud-application</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>stop</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>deploy-cloud-application</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>deploy</goal>
-                                </goals>
-                            </execution>
-                            <!-- This execution can be overridden in the sample pom.xml in order to execute additional steps 
-                                between deployment and start of the sample application. The additional execution must be specified with the neo-java-web-maven-plugin 
-                                and the same id "prepare-cloud-application" and phase "pre-integration-test" -->
-                            <execution>
-                                <id>prepare-cloud-application</id>
-                                <phase>pre-integration-test</phase>
-                            </execution>
-                            <execution>
-                                <id>start-cloud-application</id>
-                                <phase>integration-test</phase>
-                                <goals>
-                                    <goal>start</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>stop-cloud-application</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>stop</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <skip>${skipIntegrationTests}</skip>
-                            <sdkInstallPath>${sap.cloud.sdk.path}</sdkInstallPath>
-                            <host>${sap.cloud.host}</host>
-                            <user>${sap.cloud.username}</user>
-                            <password>${sap.cloud.password}</password>
-                            <account>${sap.cloud.account}</account>
-                            <application>${sap.cloud.application}</application>
-                            <source>${project.build.directory}/${project.artifactId}.war</source>
-                            <synchronous>true</synchronous>
-                            <javaVersion>7</javaVersion>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>execute-cloud-integration-tests</id>
-                                <phase>integration-test</phase>
-                                <goals>
-                                    <goal>integration-test</goal>
-                                </goals>
-                                <configuration>
-                                    <systemPropertyVariables>
-                                        <sap.cloud.username>${sap.cloud.username}</sap.cloud.username>
-                                        <sap.cloud.password>${sap.cloud.password}</sap.cloud.password>
-                                        <integration.test.server.url>https://${sap.cloud.application}${sap.cloud.account}.${sap.cloud.host}</integration.test.server.url>
-                                    </systemPropertyVariables>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>verify-cloud-integration-tests</id>
-                                <goals>
-                                    <goal>verify</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <skip>${skipIntegrationTests}</skip>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
+  <profile>
+    <id>cloud-integration-tests</id>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>com.sap.cloud</groupId>
+          <artifactId>${sap.cloud.sdk.plugin}</artifactId>
+          <executions>
+            ...
+            <execution>
+              <phase>initialize</phase>
+              <goals>
+                <goal>install-sdk</goal>
+              </goals>
+            </execution>
+            ...
+          </executions>
+          ...
+        </plugin>
+        ...
+      </plugins>
+    </build>
+  </profile>
         <!-- The local integration tests will install a local server from the repository that is contained inside the SAP Cloud 
             Platform SDK (install-local-server), deploy the sample application (deploy-local-application), allow samples to run 
             sample specific application configurations (prepare-local-application), start the local server and wait for the deployed 
