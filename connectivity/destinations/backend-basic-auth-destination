@@ -1,0 +1,8 @@
+Name=backend-basic-auth-destination
+Type=HTTP
+URL=http://virtualpingbackend:1234/BackendAppHttpBasicAuth/basic
+Authentication=BasicAuthentication
+ProxyType=OnPremise
+User=pinguser
+Password=pingpassword
+CloudConnectorVersion = 2
