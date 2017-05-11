@@ -1,0 +1,5 @@
+sdk.name=Java Web
+runtime.id=neo-java-web
+release.version=1.126.11
+runtime.version=1.126.7
+structure.version=8.0.0

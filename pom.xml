@@ -19,7 +19,7 @@
 
     <properties>
         <!-- Properties that hold information on the location, version and plugin of the SAP Cloud Platform SDK -->
-         <sap.cloud.sdk.path>${project.build.directory}/sdk</sap.cloud.sdk.path>
+         <sap.cloud.sdk.path>C:\Users\i312624\java_sapcp_project\neo-java-web-sdk-1.126.11\tools</sap.cloud.sdk.path>
         <sap.cloud.sdk.version>1.126.11</sap.cloud.sdk.version>
         <sap.cloud.sdk.plugin>neo-java-web-maven-plugin</sap.cloud.sdk.plugin>
 

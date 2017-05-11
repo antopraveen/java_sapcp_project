@@ -1,0 +1,17 @@
+# External JavaDoc URLs per JAR
+activation-1.1.1.jar = http://docs.oracle.com/javase/6/docs/api/
+chemistry-opencmis-client-api-1.0.0.jar = http://chemistry.apache.org/java/1.0.0/maven/apidocs/
+chemistry-opencmis-commons-api-1.0.0.jar = http://chemistry.apache.org/java/1.0.0/maven/apidocs/
+httpclient-4.1.3.jar = http://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs
+httpcore-4.1.4.jar = http://hc.apache.org/httpcomponents-core-ga/httpcore/apidocs
+javax.annotation-3.1-b41.jar = http://docs.oracle.com/javaee/6/api/
+javax.el-api-2.2.1.jar = http://docs.oracle.com/javaee/6/api/
+javax.servlet-3.1-b33.jar = http://docs.oracle.com/javaee/6/api/
+javax.websocket-api-1.1.jar = http://docs.oracle.com/javaee/7/api/
+jsf-api-1.2_02.jar = http://docs.oracle.com/javaee/6/api/
+jsp-api-2.2.1-b02.jar = http://docs.oracle.com/javaee/6/api/
+jstl-api-1.2.jar = http://docs.oracle.com/javaee/6/api/
+mail-1.4.1.jar = http://docs.oracle.com/javaee/6/api/
+persistence-api-1.0.jar = http://docs.oracle.com/javaee/6/api/
+slf4j-api-1.7.2.jar = https://www.slf4j.org/apidocs/
+transaction-api-1.1.jar = http://docs.oracle.com/javase/6/docs/api/
