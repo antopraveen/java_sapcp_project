@@ -36,10 +36,13 @@
 
         <!-- Property that holds the data center host is pre-defined below, but may be overwritten if required, e.g.: -->
         <!-- mvn clean verify -P cloud-integration-tests ... -Dsap.cloud.host=hanatrial.ondemand.com -->
-        <sap.cloud.host>hana.ondemand.com</sap.cloud.host>
+        <sap.cloud.host>hanatrial.ondemand.com</sap.cloud.host>
+		<sap.cloud.account>i312624trial</sap.cloud.account>
+	    <sap.cloud.username>i312624</sap.cloud.username>
+        <sap.cloud.password>Kholi@4321</sap.cloud.password>
 
         <!-- Property that holds the name of the application under which it will later appear in the cloud -->
-        <sap.cloud.application>sample</sap.cloud.application>
+        <sap.cloud.application>hello-world</sap.cloud.application>
 
         <!-- Properties that hold the local server configuration required for local integration-testing -->
         <local.server.root>${project.build.directory}/server</local.server.root>
@@ -350,7 +353,7 @@
 				</goals>
 				<configuration>
 					<!-- Following console command is used to deploy the application to the QA environment -->
-					<consoleCommand>deploy -a i312624trial -b hello-world -h hanatrial.ondemand.com -u i312 -p Kholi@4321 -source ${project.build.directory}/${project.artifactId}.war</consoleCommand>
+					<consoleCommand>deploy -a i312624trial -b hello-world -h hanatrial.ondemand.com -u i312624 -p Kholi@4321 -source ${project.build.directory}/${project.artifactId}.war</consoleCommand>
 					<!--consoleCommand>deploy -a ${sap.cloud.account} -b ${sap.cloud.application} -h ${sap.cloud.host} -u ${sap.cloud.username} -p ${sap.cloud.password} -source ${project.build.directory}/${project.artifactId}.war</consoleCommand-->			              
 				</configuration>
 			</execution>
@@ -362,7 +365,7 @@
   </goals>
   <configuration>
     <!-- The console command is used to restart the application in order to reflect the changes -->
-    <consoleCommand>restart -a ${sap.cloud.account} -b ${sap.cloud.application} -h ${sap.cloud.host} -u ${sap.cloud.username} -p ${sap.cloud.password}</consoleCommand>			              
+    <consoleCommand>restart -a i312624trial -b hello-world -h hanatrial.ondemand.com -u i312624 -p Kholi@4321</consoleCommand>			              
   </configuration>
 </execution>
           </executions>
@@ -370,6 +373,41 @@
       </plugins>
     </build>
  </profile>
+ <profile>
+    <id>update</id>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>com.sap.cloud</groupId>
+          <artifactId>${sap.cloud.sdk.plugin}</artifactId>
+          <executions>
+            <!-- This execution is required to install the SDK -->
+            <execution>
+             <phase>initialize</phase>
+             <goals>
+              <goal>install-sdk</goal>
+             </goals>
+            </execution>
+            <!-- This execution is used to run the rolling-update command for blue-green deployment -->
+            <execution>
+              <id>deploying-application</id>
+              <phase>package</phase>
+              <goals>
+                <goal>run-console-command</goal>
+              </goals>
+              <configuration>
+                <consoleCommand>rolling-update -a i312624trial -b hello-world -h hanatrial.ondemand.com -u i312624 -p Kholi@4321 -source ${project.build.directory}/${project.artifactId}.war</consoleCommand>                 
+              </configuration>
+            </execution>
+          </executions>
+     	    <configuration>
+            <skip>${skipIntegrationTests}</skip>
+            <sdkInstallPath>${sap.cloud.sdk.path}</sdkInstallPath>
+          </configuration>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
         <!-- The local integration tests will install a local server from the repository that is contained inside the SAP Cloud 
             Platform SDK (install-local-server), deploy the sample application (deploy-local-application), allow samples to run 
             sample specific application configurations (prepare-local-application), start the local server and wait for the deployed 
