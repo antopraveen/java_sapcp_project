@@ -331,6 +331,7 @@
             the maven-failsafe-plugin (execute-cloud-integration-tests) and finally stop the cloud application (stop-cloud-application) -->
         <!-- Note that you need to provide Maven properties sap.cloud.account, sap.cloud.username, and sap.cloud.password 
             for the operations to pass successfully and https.proxyHost and possibly https.proxyPort if you have a proxy! -->
+ 
  <profile>
     <id>cloud-integration-tests</id>
     <build>
@@ -346,17 +347,16 @@
               </goals>
             </execution>
 			<execution>
-				<id>deploying-application</id>
-				<phase>package</phase>
-				<goals>
-				<goal>run-console-command</goal>
-				</goals>
-				<configuration>
-					<!-- Following console command is used to deploy the application to the QA environment -->
-					<consoleCommand>deploy -a i312624trial -b hello-world -h hanatrial.ondemand.com -u i312624 -p Kholi@4321 -source ${project.build.directory}/${project.artifactId}.war</consoleCommand>
-					<!--consoleCommand>deploy -a ${sap.cloud.account} -b ${sap.cloud.application} -h ${sap.cloud.host} -u ${sap.cloud.username} -p ${sap.cloud.password} -source ${project.build.directory}/${project.artifactId}.war</consoleCommand-->			              
-				</configuration>
-			</execution>
+  <id>deploying-application</id>
+  <phase>package</phase>
+  <goals>
+    <goal>run-console-command</goal>
+  </goals>
+  <configuration>
+    <!-- Following console command is used to deploy the application to the QA environment -->
+    <!--consoleCommand>deploy -a ${sap.cloud.account} -b ${sap.cloud.application} -h ${sap.cloud.host} -u ${sap.cloud.username} -p ${sap.cloud.password} -source ${project.build.directory}/${project.artifactId}.war</consoleCommand-->	    <consoleCommand>rolling-update -a i312624trial -b hello-world -h hanatrial.ondemand.com -u i312624 -p Kholi@4321 -source ${project.build.directory}/${project.artifactId}.war</consoleCommand>        
+  </configuration>
+</execution>
 <execution>
   <id>restart-application</id>
   <phase>package</phase>
@@ -365,7 +365,8 @@
   </goals>
   <configuration>
     <!-- The console command is used to restart the application in order to reflect the changes -->
-    <consoleCommand>restart -a i312624trial -b hello-world -h hanatrial.ondemand.com -u i312624 -p Kholi@4321</consoleCommand>			              
+    <!--consoleCommand>restart -a ${sap.cloud.account} -b ${sap.cloud.application} -h ${sap.cloud.host} -u ${sap.cloud.username} -p ${sap.cloud.password}</consoleCommand-->			              
+    <consoleCommand>restart -a i312624trial -b hello-world -h hanatrial.ondemand.com -u i312624 -p Kholi@4321 -source ${project.build.directory}/${project.artifactId}.war</consoleCommand>
   </configuration>
 </execution>
           </executions>
@@ -373,41 +374,6 @@
       </plugins>
     </build>
  </profile>
- <profile>
-    <id>update</id>
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>com.sap.cloud</groupId>
-          <artifactId>${sap.cloud.sdk.plugin}</artifactId>
-          <executions>
-            <!-- This execution is required to install the SDK -->
-            <execution>
-             <phase>initialize</phase>
-             <goals>
-              <goal>install-sdk</goal>
-             </goals>
-            </execution>
-            <!-- This execution is used to run the rolling-update command for blue-green deployment -->
-            <execution>
-              <id>deploying-application</id>
-              <phase>package</phase>
-              <goals>
-                <goal>run-console-command</goal>
-              </goals>
-              <configuration>
-                <consoleCommand>rolling-update -a i312624trial -b hello-world -h hanatrial.ondemand.com -u i312624 -p Kholi@4321 -source ${project.build.directory}/${project.artifactId}.war</consoleCommand>                 
-              </configuration>
-            </execution>
-          </executions>
-     	    <configuration>
-            <skip>${skipIntegrationTests}</skip>
-            <sdkInstallPath>${sap.cloud.sdk.path}</sdkInstallPath>
-          </configuration>
-        </plugin>
-      </plugins>
-    </build>
-  </profile>
         <!-- The local integration tests will install a local server from the repository that is contained inside the SAP Cloud 
             Platform SDK (install-local-server), deploy the sample application (deploy-local-application), allow samples to run 
             sample specific application configurations (prepare-local-application), start the local server and wait for the deployed 
